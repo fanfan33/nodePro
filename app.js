@@ -1,6 +1,8 @@
 var express = require('express');
 var path = require('path'); 
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var Movie = require('./models/movie');
 
 var port = process.env.PORT || 3000;
 var app = express();
@@ -23,22 +25,6 @@ app.get('/',function(req,res) {
             title: '机械战警',
             _id: 2,
             poster: 'http://image.yingccn.com/image/59f2ade3d6c9b651421ac3d3.png'
-        },{
-            title: '机械战警',
-            _id: 3,
-            poster: 'http://image.yingccn.com/image/59f2ade3d6c9b651421ac3d3.png'
-        },{
-            title: '机械战警',
-            _id: 4,
-            poster: 'http://image.yingccn.com/image/59f2ade3d6c9b651421ac3d3.png'
-        },{
-            title: '机械战警',
-            _id: 5,
-            poster: 'http://image.yingccn.com/image/59f2ade3d6c9b651421ac3d3.png'
-        },{
-            title: '机械战警',
-            _id: 6,
-            poster: 'http://image.yingccn.com/image/59f2ade3d6c9b651421ac3d3.png'
         }]
     })
 })
@@ -54,7 +40,7 @@ app.get('/movie/:id',function(req,res) {
             language: 'english',
             poster: 'http://image.yingccn.com/image/59f2ae1dd6c9b651421ac3d5.png',
             flash: 'http://player.youku.com/player.php/sid/XMjgzNzg2MzMyOA==/v.swf',
-            summary: '这里是电影详情描述 啦啊啊啊啊啊啊啊啊啊这里是电影详情描述 啦啊啊啊啊啊啊啊啊啊这里是电影详情描述 啦啊啊啊啊啊啊啊啊啊这里是电影详情描述 啦啊啊啊啊啊啊啊啊啊这里是电影详情描述 啦啊啊啊啊啊啊啊啊啊'
+            summary: '这里是电影详情描述 啊啊啊啊啊啊'
         }
     })
 })
@@ -78,5 +64,16 @@ app.get('/admin/list',function(req,res) {
             flash: 'http://image.yingccn.com/image/59f2ae1dd6c9b651421ac3d5.png'
         }]
     })
+})
+app.get('/admin/update/:id',function(req,res) {
+    var id = req.params.id;
+    if (id) {
+        Movie.findById(id, function(err, movie) {
+            res.render('admin', {
+                title: '后台更新页',
+                movie: movie
+            })
+        })
+    }
 })
 
