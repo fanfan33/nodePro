@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>
+		<%= title%>
+	</title>
+	<% include ../includes/head.ejs %>
+</head>
+
+<body>
+	<% include ../includes/header.ejs %>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-7">
+				<embed src="<%= movie.flash %>" width="550" height="420" align="middle">
+			</div>
+			<div class="col-md-5">
+				<dl class="dl-horizontal">
+					<dt>电影名字：</dt><dd><%= movie.title %></dd>
+					<dt>导演：</dt><dd><%= movie.doctor %></dd>
+					<dt>国家：</dt><dd><%= movie.country %></dd>
+					<dt>语言：</dt><dd><%= movie.language %></dd>
+					<dt>上映年份：</dt><dd><%= movie.year %></dd>
+					<dt>简介：</dt><dd><%= movie.summary %></dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

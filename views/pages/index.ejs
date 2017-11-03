@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>
+		<%= title%>
+	</title>
+	<% include ../includes/head.ejs %>
+</head>
+
+<body>
+	<% include ../includes/header.ejs %>
+	<div class="container">
+		<div class="row">
+			<% for (var i=0; i< movies.length; i++) { %>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<figure class="thumbnail" id="<%= movies[i]._id %>">
+						<img src="<%= movies[i].poster %>" alt="<%= movies[i].title %>">
+						<figcaption>
+							<p><%= movies[i].title %></p>
+							<a role="button" class="btn btn-primary" href="/movie/<%= movies[i]._id %>">点击观看</a>
+						</figcaption>
+					</figure>
+				</div>
+			<% } %>
+
+		</div>
+	</div>
+</body>
+
+</html>
