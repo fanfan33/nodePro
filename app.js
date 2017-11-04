@@ -1,68 +1,99 @@
 var express = require('express');
 var path = require('path'); 
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');    //中间件，处理post解析
 var mongoose = require('mongoose');
+var underscore = require('underscore');     //新对象替换旧对象
+
 var Movie = require('./models/movie');
 
 var port = process.env.PORT || 3000;
 var app = express();
 
+app.locals.moment = require('moment');             //时间插件
+mongoose.Promise = global.Promise; 
+mongoose.connect('mongodb://localhost/demodb',{useMongoClient:true});
 app.set('views', './views/pages');
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended:false}));
-app.use(express.static(path.join(__dirname,'bower_components')));
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.static(path.join(__dirname,'public')));
 app.listen(port);
-console.log("server start at localhost:3000");
+console.log("server start at localhost:"+port);
 
 app.get('/',function(req,res) {
-    res.render('index', {
-        title: 'full project 首页',
-        movies: [{
-            title: '机械战警',
-            _id: 1,
-            poster: 'http://image.yingccn.com/image/59f2ade3d6c9b651421ac3d3.png'
-        },{
-            title: '机械战警',
-            _id: 2,
-            poster: 'http://image.yingccn.com/image/59f2ade3d6c9b651421ac3d3.png'
-        }]
+    Movie.fetch(function(err, movies) {
+        if (err) {
+            console.log(err);
+        }
+        res.render('index', {
+            title: 'full project 首页',
+            movies: movies
+        })
     })
+    
 })
 
 app.get('/movie/:id',function(req,res) {
-    res.render('detail', {
-        title: 'full project 详情页',
-        movie: {
-            title: '机械战警',
-            doctor: '何塞.帕德里亚',
-            country: '美国',
-            year: 2014,
-            language: 'english',
-            poster: 'http://image.yingccn.com/image/59f2ae1dd6c9b651421ac3d5.png',
-            flash: 'http://player.youku.com/player.php/sid/XMjgzNzg2MzMyOA==/v.swf',
-            summary: '这里是电影详情描述 啊啊啊啊啊啊'
-        }
+    var id = req.params.id;
+    Movie.findById(id,function(err, movie) {
+        res.render('detail', {
+            title: 'full project 详情页',
+            movie: movie
+        })
     })
 })
 
 app.get('/admin/movie',function(req,res) {
     res.render('admin', {
-        title: 'full project 后台录入页'
+        title: 'full project 后台录入页',
+        movie: {
+            title: '',
+            doctor: '',
+            country: '',
+            year: '',
+            poster: '',
+            flash: '',
+            summary: '',
+            language: ''
+        }
     })
 })
-
+app.post('/admin/movie/new', function(req, res) {
+    var id = req.body.movie._id;
+    var movieObj = req.body.movie;
+    console.log(movieObj);
+    var _movie;
+    if (id !== '') {
+        Movie.findById(id, function(err, movie) {
+            _movie = underscore.extend(movie, movieObj);
+            _movie.save(function(err, movie) {
+                if (err) { console.log(err);}
+                res.redirect('/movie/'+ movie._id);
+            })
+        })
+    } else {
+        _movie = new Movie({
+            title: movieObj.title,
+            doctor: movieObj.doctor,
+            country: movieObj.country,
+            year: movieObj.year,
+            poster: movieObj.poster,
+            flash: movieObj.flash,
+            summary: movieObj.summary,
+            language: movieObj.language
+        })
+        _movie.save(function(err, movie) {
+            if (err) { console.log(err);}
+            res.redirect('/movie/'+ movie.id);
+        })
+    }
+})
 app.get('/admin/list',function(req,res) {
-    res.render('list', {
-        title: 'full project 列表页',
-        movies: [{
-            title: '机械战警',
-            _id: 1,
-            doctor: '何塞.帕德里亚',
-            country: '美国',
-            year: 2014,
-            language: 'english',
-            flash: 'http://image.yingccn.com/image/59f2ae1dd6c9b651421ac3d5.png'
-        }]
+    Movie.fetch(function(err, movies) {
+        if (err) { console.log(err);}
+        res.render('list', {
+            title: 'full project 列表页',
+            movies: movies
+        })
     })
 })
 app.get('/admin/update/:id',function(req,res) {
@@ -73,6 +104,18 @@ app.get('/admin/update/:id',function(req,res) {
                 title: '后台更新页',
                 movie: movie
             })
+        })
+    }
+})
+app.delete('/admin/list', function(req, res) {
+    var id = req.query.id;
+    if (id) {
+        Movie.remove({_id: id},function(err, movie) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({success: 1});
+            }
         })
     }
 })
