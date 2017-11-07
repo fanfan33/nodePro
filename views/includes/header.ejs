@@ -6,3 +6,75 @@
         </div>
     </div>
 </div>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">重度科幻迷</a>
+    </div>
+    <% if (user) { %>
+        <p class="nav navbar-nav navbar-right navbar-text">
+            <span>欢迎您&nbsp</span><%= user.name %>
+            &nbsp|&nbsp
+            <span><a href="/logout">退出</a></span>
+        </p>
+    <% }else{ %>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" data-toggle="modal" data-target="#signupModal">注册</a></li>
+            <li><a href="#">|</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#signinModal">登录</a></li>
+        </ul>
+    <%}%>
+    
+</nav>
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form id="signup" method="POST" action="/user/signup">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">注册</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-name" class="control-label">用户名:</label>
+                    <input type="text" class="form-control" name="user[name]" id="recipient-name">
+                </div>
+                <div class="form-group">
+                    <label for="message-text" class="control-label">密码:</label>
+                    <input type="password" class="form-control" name="user[password]" id="message-text"></input>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">cancel</button>
+                <button type="submit" class="btn btn-primary signup">submit</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="signinModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <form id="signin" method="POST" action="/user/signin">
+            <div class="modal-header">
+                <h4 class="modal-title">登录</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="signin-name" class="control-label">用户名:</label>
+                    <input type="text" class="form-control" name="user[name]" id="signin-name">
+                </div>
+                <div class="form-group">
+                    <label for="signin-text" class="control-label">密码:</label>
+                    <input type="password" class="form-control" name="user[password]" id="signin-text"></input>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">cancel</but>
+                <button type="submit" class="btn btn-primary">submit</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+<!-- <script src="/js/ifSign.js"></script> -->
