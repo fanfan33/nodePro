@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');    //cookie-parser
 var session = require('express-session');        //cookie-session
 var mongoStore = require('connect-mongo')(session);
+var logger = require('morgan');             //日志处理
 var favicon = require('serve-favicon');         //favicon
 
 
@@ -18,8 +19,9 @@ mongoose.Promise = global.Promise;
 
 mongoose.connect(dbUrl,{useMongoClient:true});
 
-app.set('views', './views/pages');
+app.set('views', './app/views/pages');
 app.set('view engine', 'ejs');
+app.set('env', 'development');
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname,'public')));
@@ -37,12 +39,14 @@ app.use(session({
     saveUninitialized: true
 }))
 
-app.use(function(req, res, next) {
-    var _user = req.session.user;
 
-    app.locals.user = _user ? _user : '';
-    return next();
-})
+console.log(app.get('env'));
+if ('development' === app.get('env')) {
+    app.set('showStackError', true);
+    app.use(logger(':method :url :status'));
+    app.locals.pretty = true;
+    mongoose.set('debug', true);
+}
 
 require('./config/routes')(app);
 

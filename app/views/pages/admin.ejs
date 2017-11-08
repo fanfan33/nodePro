@@ -60,10 +60,19 @@
 				<div class="checkbox">
 					<label><input type="checkbox"> Check me out</label>
 				</div>
-				<button type="submit" class="btn btn-default">Submit</button>
+				<button id="submit" type="submit" disabled="true" class="btn btn-default">Submit</button>
 			</form>
 		</div>
 	</div>
+	<script>
+		$("input[type=checkbox]").click(function(){
+			if ($(this).is(':checked')) {
+				$('#submit').addClass('btn-success').attr('disabled',false);
+			} else {
+				$('#submit').removeClass('btn-success').attr('disabled',true);
+			}
+		})
+	</script>
 </body>
 
 </html>

@@ -55,25 +55,25 @@
 <div class="modal fade" id="signinModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-        <form id="signin" method="POST" action="/user/signin">
-            <div class="modal-header">
-                <h4 class="modal-title">登录</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="signin-name" class="control-label">用户名:</label>
-                    <input type="text" class="form-control" name="user[name]" id="signin-name">
+            <form id="signin" method="POST" action="/user/signin">
+                <div class="modal-header">
+                    <h4 class="modal-title">登录</h4>
                 </div>
-                <div class="form-group">
-                    <label for="signin-text" class="control-label">密码:</label>
-                    <input type="password" class="form-control" name="user[password]" id="signin-text"></input>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="signin-name" class="control-label">用户名:</label>
+                        <input type="text" class="form-control" name="user[name]" id="signin-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-text" class="control-label">密码:</label>
+                        <input type="password" class="form-control" name="user[password]" id="signin-text"></input>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">cancel</but>
-                <button type="submit" class="btn btn-primary">submit</button>
-            </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">cancel</but>
+                    <button type="submit" class="btn btn-primary">submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

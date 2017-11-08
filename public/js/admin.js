@@ -7,13 +7,12 @@ $(function() {
     
             $.ajax({
                 type: 'delete',
-                url: '/admin/list?id='+id
+                url: '/admin/movie/list?id='+id
             })
             .done(function(results) {
                 if (results.success === 1) {
                     if (tr.length > 0) {
                         tr.remove();
-                        alert('删除成功！')
                     }
                 }
             })

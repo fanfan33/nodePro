@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>
+		<%= title%>
+	</title>
+	<% include ../includes/head.ejs %>
+</head>
+
+<body>
+	<% include ../includes/header.ejs %>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-7">
+				<embed src="<%= movie.flash %>" width="550" height="420" align="middle">
+			</div>
+			
+			<div class="col-md-5">
+				<dl class="dl-horizontal">
+					<dt>电影名字：</dt><dd><%= movie.title %></dd>
+					<dt>导演：</dt><dd><%= movie.doctor %></dd>
+					<dt>国家：</dt><dd><%= movie.country %></dd>
+					<dt>语言：</dt><dd><%= movie.language %></dd>
+					<dt>上映年份：</dt><dd><%= movie.year %></dd>
+					<dt>简介：</dt><dd><%= movie.summary %></dd>
+				</dl>
+			</div>
+		</div>
+		<!-- 面板 -->
+		<div class="panel panel-default" style="margin-top:20px;">
+			<div class="panel-heading">
+				<h3 class="panel-title">评论区</h3>
+			</div>
+			<div class="panel-body">
+				<ul class="media-list">
+					<% for(var i=0;i< comments.length;i++) { %>
+						<li class="media">
+							<div class="media-left">
+							<a href="#">
+								<img width="30px" height="30px" class="media-object" src="http://image.yingccn.com/image/58e4d876d6c9b64412e5cd85.png" alt="head">
+							</a>
+							</div>
+							<div class="media-body">
+								<h4 class="media-heading"><%= comments[i].from.name %></h4>
+								<p><%= comments[i].content %></p>
+							</div>
+						</li>
+						<hr />
+					<%}%>
+				</ul>
+			</div>
+		</div>
+		<form method="post" action="/user/comment" style="margin-bottom:70px;text-align:center;">
+			<input type="hidden" name="comment[movie]" value="<%= movie._id %>">
+			<input type="hidden" name="comment[from]" value="<%= user?user._id:'' %>">
+			<div class="form-group">
+				<textarea class="form-control" name="comment[content]" rows="3"></textarea>
+				<button class="btn btn-primary">提交评论</button>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>
