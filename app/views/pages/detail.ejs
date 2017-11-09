@@ -11,56 +11,110 @@
 
 <body>
 	<% include ../includes/header.ejs %>
-	<div class="container">
-		<div class="row">
-			<div class="col-md-7">
-				<embed src="<%= movie.flash %>" width="550" height="420" align="middle">
-			</div>
-			
-			<div class="col-md-5">
-				<dl class="dl-horizontal">
-					<dt>电影名字：</dt><dd><%= movie.title %></dd>
-					<dt>导演：</dt><dd><%= movie.doctor %></dd>
-					<dt>国家：</dt><dd><%= movie.country %></dd>
-					<dt>语言：</dt><dd><%= movie.language %></dd>
-					<dt>上映年份：</dt><dd><%= movie.year %></dd>
-					<dt>简介：</dt><dd><%= movie.summary %></dd>
-				</dl>
-			</div>
-		</div>
-		<!-- 面板 -->
-		<div class="panel panel-default" style="margin-top:20px;">
-			<div class="panel-heading">
-				<h3 class="panel-title">评论区</h3>
-			</div>
-			<div class="panel-body">
-				<ul class="media-list">
-					<% for(var i=0;i< comments.length;i++) { %>
-						<li class="media">
-							<div class="media-left">
-							<a href="#">
-								<img width="30px" height="30px" class="media-object" src="http://image.yingccn.com/image/58e4d876d6c9b64412e5cd85.png" alt="head">
-							</a>
-							</div>
-							<div class="media-body">
-								<h4 class="media-heading"><%= comments[i].from.name %></h4>
-								<p><%= comments[i].content %></p>
-							</div>
-						</li>
-						<hr />
-					<%}%>
-				</ul>
-			</div>
-		</div>
-		<form method="post" action="/user/comment" style="margin-bottom:70px;text-align:center;">
-			<input type="hidden" name="comment[movie]" value="<%= movie._id %>">
-			<input type="hidden" name="comment[from]" value="<%= user?user._id:'' %>">
-			<div class="form-group">
-				<textarea class="form-control" name="comment[content]" rows="3"></textarea>
-				<button class="btn btn-primary">提交评论</button>
-			</div>
-		</form>
-	</div>
-</body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7">
+					<embed src="<%= movie.flash %>" width="550" height="420" align="middle">
+				</div>
 
+				<div class="col-md-5">
+					<dl class="dl-horizontal">
+						<dt>电影名字：</dt>
+						<dd>
+							<%= movie.title %>
+						</dd>
+						<dt>导演：</dt>
+						<dd>
+							<%= movie.doctor %>
+						</dd>
+						<dt>国家：</dt>
+						<dd>
+							<%= movie.country %>
+						</dd>
+						<dt>语言：</dt>
+						<dd>
+							<%= movie.language %>
+						</dd>
+						<dt>上映年份：</dt>
+						<dd>
+							<%= movie.year %>
+						</dd>
+						<dt>简介：</dt>
+						<dd>
+							<%= movie.summary %>
+						</dd>
+					</dl>
+				</div>
+			</div>
+			<!-- 面板 -->
+			<div class="panel panel-primary col-sm-7" style="margin-top:20px;padding:0">
+				<div class="panel-heading">
+					<h3 class="panel-title">评论区</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="media-list">
+						<% if(comments && comments.length>0) { %>
+							<% for(var i=0;i< comments.length;i++) { %>
+								<li class="media">
+									<div class="media-left">
+										<a class="toReply" href="#comments" data-cid="<%= comments[i]._id %>" data-tid="<%= comments[i].from._id %>">
+											<img width="30px" height="30px" class="media-object img-circle" src="http://image.yingccn.com/image/58e4d876d6c9b64412e5cd85.png" alt="head">
+										</a>
+									</div>
+									<div class="media-body">
+										<h4 class="media-heading">
+											<%= comments[i].from.name %>
+										</h4>
+										<p>
+											<%= comments[i].content %>
+											<hr />
+											<!-- 回复用户 -->
+											<% if(comments[i].reply && comments[i].reply.length> 0) { %>
+												<% for(var j=0;j< comments[i].reply.length;j++) { %>
+													<div class="media">
+														<div class="media-left">
+															<a class="toReply" href="#comments" data-cid="<%= comments[i]._id %>" data-tid="<%= comments[i].reply[j].from._id %>">
+																<img width="30px" height="30px" class="media-object img-circle" src="http://image.yingccn.com/image/58e4d876d6c9b64412e5cd85.png" alt="head">
+															</a>
+														</div>
+														<div class="media-body">
+															<h4 class="media-heading">
+																<%= comments[i].reply[j].from.name %> &nbsp<small class="text-info">回复</small>&nbsp <%= comments[i].reply[j].to.name %>
+															</h4>
+															<p>
+																<%= comments[i].reply[j].content %>
+															</p>
+														</div>
+													</div>
+													<hr />
+												<%}%>
+											<%}%>
+										</p>
+									</div>
+								</li>
+								<hr />
+							<%}%>
+						<%}else{%>
+							<p>快来抢沙发哦</p>
+						<%}%>
+					</ul>
+				</div>
+			</div>
+			<form method="post" action="/user/comment" style="margin-bottom:70px;text-align:center;">
+				<input type="hidden" name="comment[movie]" value="<%= movie._id %>">
+				<% if(user) { %>
+					<input type="hidden" name="comment[from]" value="<%= user._id %>">
+				<% } %>
+				<div class="form-group">
+					<textarea id="comments" class="form-control" name="comment[content]" rows="3"></textarea>
+					<% if(user) { %>
+						<button class="btn btn-primary">提交评论</button>
+					<% }else{ %>
+						<a href="#" data-toggle="modal" data-target="#signinModal">登录后评论</a></li>
+					<% } %>
+				</div>
+			</form>
+		</div>
+</body>
+<script src="/js/detail.js"></script>
 </html>

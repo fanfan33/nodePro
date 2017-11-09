@@ -1,7 +1,6 @@
 var Movie = require('../models/movie');
 exports.index = function(req, res){
-        console.log('user in session');
-        console.log(req.session.user)
+        // console.log('user in session：'+ req.session.user.name ? req.session.user.name : '');
     
         Movie.fetch(function(err, movies) {
             if (err) {
