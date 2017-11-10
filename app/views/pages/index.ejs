@@ -13,18 +13,29 @@
 	<% include ../includes/header.ejs %>
 	<div class="container">
 		<div class="row">
-			<% for (var i=0; i< movies.length; i++) { %>
-				<div class="col-md-2 col-sm-2 col-xs-2">
-					<figure class="thumbnail" id="<%= movies[i]._id %>">
-						<img src="<%= movies[i].poster %>" alt="<%= movies[i].title %>">
-						<figcaption>
-							<p><%= movies[i].title %></p>
-							<a role="button" class="btn btn-primary" href="/movie/<%= movies[i]._id %>">点击观看</a>
-						</figcaption>
-					</figure>
+			<% catetories.forEach(function(catetory) { %>
+				<div class="panel panel-default">
+					<div class="panel-heading"><%= catetory.name %></div>
+					<div class="panel-body">
+							<% if(catetory.movies && catetory.movies.length>0) { %>
+	
+								<% catetory.movies.forEach(function(cat){ %>
+									<div class="col-md-2 col-sm-2 col-xs-2">
+										<figure class="thumbnail" id="<%= cat._id %>">
+											<img src="<%= cat.poster %>" alt="<%= cat.title %>">
+											<figcaption>
+												<p><%= cat.title %></p>
+												<a role="button" class="btn btn-primary" href="/movie/<%= cat._id %>">点击观看</a>
+											</figcaption>
+										</figure>
+									</div>
+								<% }) %>
+							<% }else{ %>
+								<p>暂无数据</p>
+							<% } %>
+						</div>
 				</div>
-			<% } %>
-
+			<% }) %>
 		</div>
 	</div>
 </body>

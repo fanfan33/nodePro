@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>
+		<%= title%>
+	</title>
+    <% include ../includes/head.ejs %>
+    
+</head>
+
+<body>
+	<% include ../includes/header.ejs %>
+	<div class="container">
+		<div class="row">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>类别</th>
+						<th>录入时间</th>
+                            <th>查看</th>
+                            <th>更新</th>
+						<th>删除</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% for(var i=0;i< catetories.length;i++) { %>
+						<tr class="item-id-<%=catetories[i]._id  %>">
+							<td><%=catetories[i].name %></td>
+							<td><%=moment(catetories[i].meta.updateAt).format('MM/DD/YYYY') %></td>
+							<td><a target="_black" href="/movie/<%=catetories[i]._id %>">查看</a></td>
+							<td><a target="_black" href="/admin/update/<%=catetories[i]._id %>">修改</a></td>
+							<td><button class="btn btn-danger userdel" data-id="<%=catetories[i]._id%>">删除</button></td>
+						</tr>
+					<% } %>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+	<script src="/js/userDel.js"></script>
+</body>
+
+</html>
