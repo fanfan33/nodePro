@@ -27,7 +27,7 @@ exports.movieIn = function(req,res) {
         res.render('admin', {
             title: 'full project 后台录入页',
             catetories: catetories,
-            movie: {}
+            movie: ""
         })
     })
 }
@@ -61,16 +61,34 @@ exports.movieNew = function(req, res) {
             })
         })
     } else {
-        _movie = new Movie(movieObj)
-        var catId = _movie.catetory;
+        _movie = new Movie(movieObj);
+
+        var catName = movieObj.catetoryName;
+
+        var catId = movieObj.catetory;
+
         _movie.save(function(err, movie) {
             if (err) { console.log(err);}
-            Catetory.findById(catId, function(err, catetory) {
-                catetory.movies.push(movie._id);
-                catetory.save(function(err, catetory){
-                    res.redirect('/movie/'+ movie._id);
+            if (catId) {
+                Catetory.findById(catId, function(err, catetory) {
+                    catetory.movies.push(movie._id);
+                    catetory.save(function(err, catetory){
+                        res.redirect('/movie/'+ movie._id);
+                    })
                 })
-            })
+            }else if(catName) {
+                var catetory = new Catetory({
+                    name: catName,
+                    movies: [movie._id]
+                })
+                catetory.save(function(err,catetory){
+                    movie.catetory = catetory._id;
+                    movie.save(function(err,movie){
+                        res.redirect('/movie/'+ movie._id);
+                    })
+                })
+            }
+           
         })
     }
 }
