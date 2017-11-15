@@ -12,6 +12,8 @@ module.exports = function(app) {
     })
 
     app.get('/', Index.index)
+
+    app.get('/results', Index.results)
     
     app.get('/movie/:id', Movie.detail)
     app.get('/admin/movie/new', Movie.movieIn)

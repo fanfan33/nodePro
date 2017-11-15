@@ -10,6 +10,10 @@ var MovieSchema = new Schema({
     flash: String,
     poster: String,
     year: Number,
+    pv: {
+        type: Number,
+        ref: 0
+    },
     catetory: {
         type: ObjectId,
         ref: 'Catetory'

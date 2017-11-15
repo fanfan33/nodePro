@@ -1,9 +1,22 @@
 <div class="container">
     <div class="row">
-        <div class="page-header">
+        <div class="page-header clearfix">
             <h1><%= title%></h1>
-            <small>重度科幻迷</small>
+            <div class="col-sm-4">重度科幻迷</div>
+            <div class="col-sm-8">
+                <form action="/results" method="get">
+                    
+                    <div class="input-group col-sm-4 pull-right">
+                        <input type="text" name="content" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                    </div><!-- /input-group -->
+                    
+                </form>
+            </div>
         </div>
+        
     </div>
 </div>
 <nav class="navbar navbar-default navbar-fixed-bottom">

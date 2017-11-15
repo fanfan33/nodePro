@@ -15,7 +15,11 @@
 		<div class="row">
 			<% catetories.forEach(function(catetory) { %>
 				<div class="panel panel-default">
-					<div class="panel-heading"><%= catetory.name %></div>
+					<div class="panel-heading">
+						<h3>
+							<a href="/results?cat_id=<%= catetory._id %>&page=0" > <%= catetory.name %> </a>
+						</h3>
+					</div>
 					<div class="panel-body">
 							<% if(catetory.movies && catetory.movies.length>0) { %>
 	
