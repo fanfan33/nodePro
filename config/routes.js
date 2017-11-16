@@ -3,6 +3,8 @@ var User = require('../app/controllers/user');
 var Movie = require('../app/controllers/movie');
 var Comment = require('../app/controllers/comment');
 var Catetory = require('../app/controllers/catetory');
+var multer = require('multer');
+var upload = multer({dest: '../public/upload'})
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -16,9 +18,9 @@ module.exports = function(app) {
     app.get('/results', Index.results)
     
     app.get('/movie/:id', Movie.detail)
-    app.get('/admin/movie/new', Movie.movieIn)
-    app.post('/admin/movie/new', Movie.movieNew)
-    app.get('/admin/movie/list', Movie.list)
+    app.get('/admin/movie/new', Index.signInRequired, Index.adminRequired, Movie.movieIn)
+    app.post('/admin/movie/new',upload.single('fileUpload'), Movie.fileUpload, Movie.movieNew)
+    app.get('/admin/movie/list', Index.signInRequired, Index.adminRequired, Movie.list)
     app.get('/admin/movie/update/:id', Movie.update)
     app.delete('/admin/movie/list', Movie.list)
 
@@ -30,7 +32,7 @@ module.exports = function(app) {
     //删除用户信息
     app.delete('/user/del', User.del)
     app.post('/user/signup',User.signup)
-    app.get('/user/list', User.list)
+    app.get('/user/list', Index.signInRequired, Index.adminRequired, User.list)
     app.post('/user/signin', User.signin)
     app.get('/logout', User.logout)
     app.get('/signin', User.signinPage)

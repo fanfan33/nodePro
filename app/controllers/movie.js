@@ -3,6 +3,10 @@ var underscore = require('underscore');
 var Comment = require('../models/comment');
 var Catetory = require('../models/catetory');
 
+var fs = require('fs');
+var path = require('path');
+
+
 exports.detail = function(req,res) {
     var id = req.params.id;
     console.log(req.params);
@@ -45,15 +49,42 @@ exports.update = function(req, res) {
                 })
             })
         })
-    } else {
-        
     }
+}
+exports.fileUpload = function(req, res, next) {
+   var postData = req.file;
+   var dataPath = postData.path;
+   var originalName = postData.originalname;
+   console.log(postData)
+   if (originalName) {
+       var timestamp = Date.now();
+       var type = postData.mimetype.split('/')[1];
+       var poster = timestamp + '.' + type;
+        var des_file =path.join(__dirname, '../../', '/public/dist/'+ poster);
+        console.log("0000000000000000")
+        fs.readFile(dataPath, function(err, data) {
+            fs.writeFile(des_file, data, function(err) {
+                req.poster = poster;
+                next();
+            })
+        })
+   } else {
+       next()
+   }
+   
+   
 
+    // console.log(req.file);
+    // next()
 }
 exports.movieNew = function(req, res) {
     var id = req.body.movie._id;
     var movieObj = req.body.movie;
     var _movie;
+    if (req.poster) {
+        movieObj.poster = req.poster;
+    }
+
     if (id) {
         Movie.findById(id, function(err, movie) {
             _movie = underscore.extend(movie, movieObj);

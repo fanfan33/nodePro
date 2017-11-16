@@ -1,7 +1,8 @@
 var express = require('express');
-var path = require('path'); 
+var path = require('path');
 var bodyParser = require('body-parser');    //中间件，处理post解析
 var mongoose = require('mongoose');
+var multer = require('multer');
 
 var cookieParser = require('cookie-parser');    //cookie-parser
 var session = require('express-session');        //cookie-session

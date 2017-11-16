@@ -6,7 +6,12 @@ var UserSchema = new mongoose.Schema({
         unique: true,
         type: String
     },
+    originalPwd: String,
     password: String,
+    role: {
+        type: Number,
+        default: 0
+    },
     meta: {
         createAt: {
             type: Date,
@@ -20,6 +25,7 @@ var UserSchema = new mongoose.Schema({
 })
 UserSchema.pre('save', function(next) {
     var user = this;
+    this.originalPwd = user.password;
     if(this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now();
     }else{
