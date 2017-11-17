@@ -22,11 +22,12 @@ module.exports = function(app) {
     app.post('/admin/movie/new',upload.single('fileUpload'), Movie.fileUpload, Movie.movieNew)
     app.get('/admin/movie/list', Index.signInRequired, Index.adminRequired, Movie.list)
     app.get('/admin/movie/update/:id', Movie.update)
-    app.delete('/admin/movie/list', Movie.list)
+    app.delete('/admin/movie/list', Movie.movieDel)
 
     app.get('/admin/catetory/new', Catetory.new)
     app.post('/admin/catetory', Catetory.save)
     app.get('/admin/catetory/list', Catetory.list)
+    app.delete('/admin/catetory/del', Catetory.catetoryDel)
 
 
     //删除用户信息

@@ -31,15 +31,14 @@
 							<td><%=moment(catetories[i].meta.updateAt).format('MM/DD/YYYY') %></td>
 							<td><a target="_black" href="/movie/<%=catetories[i]._id %>">查看</a></td>
 							<td><a target="_black" href="/admin/update/<%=catetories[i]._id %>">修改</a></td>
-							<td><button class="btn btn-danger userdel" data-id="<%=catetories[i]._id%>">删除</button></td>
+							<td><button class="btn btn-danger del catetory" disabled="disabled" data-id="<%=catetories[i]._id%>">删除</button></td>
 						</tr>
 					<% } %>
 				</tbody>
 			</table>
-
 		</div>
 	</div>
-	<script src="/js/userDel.js"></script>
+	<script src="/js/admin.js"></script>
 </body>
 
 </html>

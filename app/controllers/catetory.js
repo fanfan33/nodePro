@@ -24,3 +24,12 @@ exports.list = function(req, res){
         })
     })
 }
+exports.catetoryDel = function(req, res) {
+    var id = req.query.id;
+    Catetory.remove({_id: id}, function(err, catetory) {
+        if (err) {
+            console.log(err)
+        }
+        res.json({success: 1})
+    })
+}
