@@ -1,0 +1,11 @@
+nav {
+  padding: 0 10%;
+  box-sizing: border-box;
+}
+.thumbnail {
+  text-align: center;
+}
+.thumbnail img {
+  width: 130px;
+  height: 170px;
+}

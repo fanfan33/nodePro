@@ -46,7 +46,7 @@ if ('development' === app.get('env')) {
     app.set('showStackError', true);
     app.use(logger(':method :url :status'));
     app.locals.pretty = true;
-    mongoose.set('debug', true);
+    mongoose.set('debug', false);
 }
 
 require('./config/routes')(app);
