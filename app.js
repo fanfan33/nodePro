@@ -1,8 +1,8 @@
 var express = require('express');
 var path = require('path');
-var bodyParser = require('body-parser');    //中间件，处理post解析
+var bodyParser = require('body-parser');    //处理post解析
 var mongoose = require('mongoose');
-var multer = require('multer');
+var multer = require('multer');             //处理multipart/form-data类型的表单数据
 
 var cookieParser = require('cookie-parser');    //cookie-parser
 var session = require('express-session');        //cookie-session
@@ -44,7 +44,7 @@ app.use(session({
 console.log(app.get('env'));
 if ('development' === app.get('env')) {
     app.set('showStackError', true);
-    app.use(logger(':method :url :status'));
+    app.use(logger(':method :url :status :res[content-length] - :response-time ms'));
     app.locals.pretty = true;
     mongoose.set('debug', false);
 }

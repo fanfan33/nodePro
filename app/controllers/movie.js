@@ -52,30 +52,26 @@ exports.update = function(req, res) {
     }
 }
 exports.fileUpload = function(req, res, next) {
-   var postData = req.file;
-   var dataPath = postData.path;
-   var originalName = postData.originalname;
-   console.log(postData)
-   if (originalName) {
-       var timestamp = Date.now();
-       var type = postData.mimetype.split('/')[1];
-       var poster = timestamp + '.' + type;
-        var des_file =path.join(__dirname, '../../', '/public/dist/'+ poster);
-        console.log("0000000000000000")
-        fs.readFile(dataPath, function(err, data) {
-            fs.writeFile(des_file, data, function(err) {
-                req.poster = poster;
-                next();
+    if (req.file) {
+        var postData = req.file;
+        var dataPath = postData.path;
+        var originalName = postData.originalname;
+        var timestamp = Date.now();
+        var type = postData.mimetype.split('/')[1];
+        var poster = timestamp + '.' + type;
+            var des_file =path.join(__dirname, '../../', '/public/dist/'+ poster);
+            console.log("0000000000000000")
+            fs.readFile(dataPath, function(err, data) {
+                fs.writeFile(des_file, data, function(err) {
+                    req.poster = poster;
+                    next();
+                })
             })
-        })
-   } else {
-       next()
-   }
-   
-   
-
-    // console.log(req.file);
-    // next()
+    }
+    else {
+        next()
+    }                                
+  
 }
 exports.movieNew = function(req, res) {
     var id = req.body.movie._id;

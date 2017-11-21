@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- <script src="public/libs/bluebird/js/browser/bluebird.js"></script> -->
+    <style>
+    .ball{
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        border-radius: 50%;
+    }
+    </style>
+</head>
+<body>
+    <div style="margin-left:0;" id="ball1" class="ball ball1"></div>
+    <div style="margin-left:0;" id="ball2" class="ball ball2"></div>
+    <div style="margin-left:0;" id="ball3" class="ball ball3"></div>
+</body>
+<script>
+    function getEle(ele){
+        return document.getElementById(ele);
+    }
+    var ball1 = getEle("ball1");
+    var ball2 = getEle("ball2");
+    var ball3 = getEle("ball3");
+
+    
+    function animate(ball, distance, cb){
+        
+        setTimeout(function() {
+            var marginleft = parseInt(ball.style.marginLeft, 10);
+            console.log(marginleft+"--"+distance)
+            if (marginleft == distance) {
+                cb && cb();
+            } else {
+                if(marginleft < distance){
+                    marginleft ++;
+                } else {
+                    marginleft --;
+                }
+                ball.style.marginLeft = marginleft + "px";
+                animate(ball, distance, cb);
+            } 
+        }, 13);
+    }
+    // animate(ball1, 100, function(){
+    //     animate(ball2, 150, function(){
+    //         animate(ball3, 200, function(){
+    //             animate(ball3, 150, function(){
+    //                 animate(ball2, 150, function(){
+    //                     animate(ball1, 150, function(){
+
+    //                     })
+    //                 })
+    //             })
+    //         })
+    //     })
+    // })
+
+    var Promise = window.Promise
+    function promiseAnimate(ball, distance) {
+        return new Promise(function(resolve, reject) {
+            function _animate() {
+                setTimeout(function() {
+                    var marginleft = parseInt(ball.style.marginLeft, 10);
+                    if (marginleft == distance) {
+                        resolve();
+                    } else {
+                        if(marginleft < distance){
+                            marginleft ++;
+                        } else {
+                            marginleft --;
+                        }
+                        ball.style.marginLeft = marginleft + "px";
+                        _animate();
+                    } 
+                }, 13);
+            }
+            _animate()
+        })
+    }
+    promiseAnimate(ball1, 100)
+        .then(function(){
+            return promiseAnimate(ball2, 200)
+        })
+        .then(function(){
+            return promiseAnimate(ball3, 300)
+        })
+        .then(function(){
+            return promiseAnimate(ball3, 150)
+        })
+        .then(function(){
+            return promiseAnimate(ball2, 150)
+        })
+        .then(function(){
+            return promiseAnimate(ball1, 150)
+        })
+</script>
+</html>

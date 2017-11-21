@@ -4,7 +4,7 @@ var Movie = require('../app/controllers/movie');
 var Comment = require('../app/controllers/comment');
 var Catetory = require('../app/controllers/catetory');
 var multer = require('multer');
-var upload = multer({dest: '../public/upload'})
+var upload = multer({dest: '/upload/'})
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
