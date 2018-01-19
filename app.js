@@ -18,11 +18,9 @@ var dbUrl = 'mongodb://localhost/demodb';
 app.locals.moment = require('moment');             //时间插件
 mongoose.Promise = global.Promise; 
 
-mongoose.connect(dbUrl,{useMongoClient:true});
-
 app.set('views', './app/views/pages');
 app.set('view engine', 'ejs');
-app.set('env', 'development');
+// app.set('env', 'development');
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname,'public')));
@@ -39,9 +37,6 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }))
-
-
-console.log(app.get('env'));
 if ('development' === app.get('env')) {
     app.set('showStackError', true);
     app.use(logger(':method :url :status :res[content-length] - :response-time ms'));
@@ -52,6 +47,14 @@ if ('development' === app.get('env')) {
 require('./config/routes')(app);
 
 app.set('port', port);
-var server = app.listen(app.get('port'), function() {
-    console.log('Express server listening on port ' + server.address().port);
-})
+mongoose.connect(dbUrl,{useMongoClient:true}, (err)=> {
+    if (err) {
+        console.log('数据库连接失败');
+    } else {
+        console.log('数据库连接成功');
+        var server = app.listen(app.get('port'), ()=> {
+            console.log('Express server listening on port ' + server.address().port);
+        })
+    }
+    
+});
